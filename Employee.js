@@ -65,20 +65,24 @@ class Employee {
 }
 
 class EmployeePayroll {
-    constructor(id, name, salary) {
+    constructor(id, name, salary, gender, startDate) {
         this.id = id;
         this.name = name;
         this.salary = salary;
+        this.gender = gender;
+        this.startDate = new Date(startDate); // Ensure start date is in Date format
     }
 
     // Function to display employee details
-    getDetails = () => 
-        `Employee ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}`;
+    getDetails = () => {
+        const formattedStartDate = this.startDate.toLocaleDateString(); // Format the date
+        return `Employee ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}, Gender: ${this.gender}, Start Date: ${formattedStartDate}`;
+    };
 }
 
-// Example Usage1:
-const emp1 = new EmployeePayroll(101, "John Doe", 50000);
-const emp2 = new EmployeePayroll(102, "Jane Smith", 60000);
+// Example Usage:
+const emp1 = new EmployeePayroll(101, "John Doe", 50000, "Male", "2022-05-01");
+const emp2 = new EmployeePayroll(102, "Jane Smith", 60000, "Female", "2021-03-15");
 
 console.log(emp1.getDetails());
 console.log(emp2.getDetails());
