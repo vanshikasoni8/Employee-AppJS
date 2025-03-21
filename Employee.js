@@ -35,6 +35,7 @@ class Employee {
     }
 }
 
+
 const employee1 = new Employee("John Doe");
 
 // console.log(employee1.checkAttendance());
