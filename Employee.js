@@ -36,20 +36,30 @@ class Employee {
         return `${this.name} worked ${workHours} hours and earned $${dailyWage}`;
     }
 
+    // Function to calculate monthly wage with max 160 hours or 20 days
     calculateMonthlyWage() {
         const WAGE_PER_HOUR = 20;
-        const WORKING_DAYS = 20;
+        const MAX_WORKING_DAYS = 20;
+        const MAX_WORKING_HOURS = 160;
 
         let totalWage = 0;
         let totalHours = 0;
+        let daysWorked = 0;
 
-        for (let day = 1; day <= WORKING_DAYS; day++) {
+        while (totalHours < MAX_WORKING_HOURS && daysWorked < MAX_WORKING_DAYS) {
             let workHours = this.getWorkHours();
+
+            // Ensure we don't exceed 160 hours
+            if (totalHours + workHours > MAX_WORKING_HOURS) {
+                workHours = MAX_WORKING_HOURS - totalHours; // Adjust hours to exactly 160
+            }
+
             totalHours += workHours;
             totalWage += workHours * WAGE_PER_HOUR;
+            daysWorked++;
         }
 
-        return `${this.name} worked a total of ${totalHours} hours in the month and earned $${totalWage}`;
+        return `${this.name} worked ${totalHours} hours over ${daysWorked} days and earned $${totalWage}`;
     }
 }
 
