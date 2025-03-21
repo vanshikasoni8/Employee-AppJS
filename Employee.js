@@ -73,19 +73,37 @@ class EmployeePayroll {
         this.startDate = new Date(startDate); // Ensure start date is in Date format
     }
 
+    // Function to validate employee name using regex pattern
+    validateName = () => {
+        try {
+            const namePattern = /^[A-Z][a-zA-Z]{2,}$/;  // Starts with capital, minimum 3 characters
+            if (!this.name.match(namePattern)) {
+                throw new Error('Invalid Name: Name must start with a capital letter and have at least 3 characters.');
+            }
+            return true;  // Name is valid
+        } catch (error) {
+            console.error(error.message);  // Catch and log error
+            return false;  // Invalid name
+        }
+    };
+
     // Function to display employee details
     getDetails = () => {
-        const formattedStartDate = this.startDate.toLocaleDateString(); // Format the date
-        return `Employee ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}, Gender: ${this.gender}, Start Date: ${formattedStartDate}`;
+        if (this.validateName()) {
+            const formattedStartDate = this.startDate.toLocaleDateString(); // Format the date
+            return `Employee ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}, Gender: ${this.gender}, Start Date: ${formattedStartDate}`;
+        } else {
+            return 'Employee name is invalid. Please check the name format.';
+        }
     };
 }
 
 // Example Usage:
 const emp1 = new EmployeePayroll(101, "John Doe", 50000, "Male", "2022-05-01");
-const emp2 = new EmployeePayroll(102, "Jane Smith", 60000, "Female", "2021-03-15");
+const emp2 = new EmployeePayroll(102, "jane smith", 60000, "Female", "2021-03-15");
 
-console.log(emp1.getDetails());
-console.log(emp2.getDetails());
+console.log(emp1.getDetails());  // Valid name
+console.log(emp2.getDetails());  // Invalid name (starts with lowercase)
 
 // // Example Usage:
 // const employee1 = new Employee("John Doe");
