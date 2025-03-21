@@ -57,9 +57,16 @@ class Employee {
             totalHours += workHours;
             totalWage += workHours * WAGE_PER_HOUR;
             daysWorked++;
+
+           // Store daily wage
+           this.dailyWages.push({ day: daysWorked, workHours, dailyWage });
         }
 
-        return `${this.name} worked ${totalHours} hours over ${daysWorked} days and earned $${totalWage}`;
+        return {
+            totalHours,
+            totalWage,
+            dailyWages: this.dailyWages,
+        };
     }
 }
 
@@ -68,4 +75,8 @@ const employee1 = new Employee("John Doe");
 
 console.log(employee1.checkAttendance());
 console.log(employee1.calculateDailyWage());
-console.log(employee1.calculateMonthlyWage());
+const monthlyWage = employee1.calculateMonthlyWage();
+
+console.log(`Total Hours: ${monthlyWage.totalHours}`);
+console.log(`Total Wage: $${monthlyWage.totalWage}`);
+console.log("Daily Wages:", monthlyWage.dailyWages);
