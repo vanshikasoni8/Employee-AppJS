@@ -64,13 +64,32 @@ class Employee {
             .map(log => `Day ${log.day}`);
 }
 
-// Example Usage:
-const employee1 = new Employee("John Doe");
-employee1.calculateMonthlyWage();
+class EmployeePayroll {
+    constructor(id, name, salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
 
-const { totalWage, totalHours } = employee1.getTotalWageAndHours();
-console.log(`\nTotal Wage: $${totalWage}, Total Hours Worked: ${totalHours}`);
+    // Function to display employee details
+    getDetails = () => 
+        `Employee ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}`;
+}
 
-employee1.showFullWorkDays();
-console.log("\nPart-Time Work Days:", employee1.getPartWorkDays());
-console.log("\nNo Work Days:", employee1.getNoWorkDays());
+// Example Usage1:
+const emp1 = new EmployeePayroll(101, "John Doe", 50000);
+const emp2 = new EmployeePayroll(102, "Jane Smith", 60000);
+
+console.log(emp1.getDetails());
+console.log(emp2.getDetails());
+
+// // Example Usage:
+// const employee1 = new Employee("John Doe");
+// employee1.calculateMonthlyWage();
+
+// const { totalWage, totalHours } = employee1.getTotalWageAndHours();
+// console.log(`\nTotal Wage: $${totalWage}, Total Hours Worked: ${totalHours}`);
+
+// employee1.showFullWorkDays();
+// console.log("\nPart-Time Work Days:", employee1.getPartWorkDays());
+// console.log("\nNo Work Days:", employee1.getNoWorkDays());
