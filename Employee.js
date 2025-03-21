@@ -35,6 +35,22 @@ class Employee {
         let dailyWage = workHours * WAGE_PER_HOUR;
         return `${this.name} worked ${workHours} hours and earned $${dailyWage}`;
     }
+
+    calculateMonthlyWage() {
+        const WAGE_PER_HOUR = 20;
+        const WORKING_DAYS = 20;
+
+        let totalWage = 0;
+        let totalHours = 0;
+
+        for (let day = 1; day <= WORKING_DAYS; day++) {
+            let workHours = this.getWorkHours();
+            totalHours += workHours;
+            totalWage += workHours * WAGE_PER_HOUR;
+        }
+
+        return `${this.name} worked a total of ${totalHours} hours in the month and earned $${totalWage}`;
+    }
 }
 
 // Example Usage:
@@ -42,3 +58,4 @@ const employee1 = new Employee("John Doe");
 
 console.log(employee1.checkAttendance());
 console.log(employee1.calculateDailyWage());
+console.log(employee1.calculateMonthlyWage());
