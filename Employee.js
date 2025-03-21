@@ -1,7 +1,8 @@
 class Employee {
     constructor(name) {
         this.name = name;
-        this.dailyWages = []; // Store daily wages
+        this.dailyWages = []; // Array to store daily wages
+        this.dailyWageMap = new Map(); // Map to store wages by day
     }
 
     // Function to determine work hours
@@ -29,7 +30,7 @@ class Employee {
         return { workHours, dailyWage };
     }
 
-    // Function to calculate monthly wage with max 160 hours or 20 days
+    // Function to calculate monthly wage and store in Map
     calculateMonthlyWage() {
         const WAGE_PER_HOUR = 20;
         const MAX_WORKING_DAYS = 20;
@@ -37,7 +38,8 @@ class Employee {
 
         let totalHours = 0;
         let daysWorked = 0;
-        this.dailyWages = []; // Reset daily wages array
+        this.dailyWages = []; // Reset array
+        this.dailyWageMap.clear(); // Reset map
 
         while (totalHours < MAX_WORKING_HOURS && daysWorked < MAX_WORKING_DAYS) {
             let { workHours, dailyWage } = this.calculateDailyWage();
@@ -50,45 +52,22 @@ class Employee {
             totalHours += workHours;
             daysWorked++;
 
-            // Store daily wage
+            // Store in Array & Map
             this.dailyWages.push({ day: daysWorked, workHours, dailyWage });
+            this.dailyWageMap.set(daysWorked, dailyWage);
         }
     }
 
-    // a. Calculate total wage using reduce
-    getTotalWage() {
-        return this.dailyWages.reduce((total, day) => total + day.dailyWage, 0);
+    // a. Compute total wage using forEach on the Map
+    getTotalWageFromMap() {
+        let totalWage = 0;
+        this.dailyWageMap.forEach(wage => totalWage += wage);
+        return totalWage;
     }
 
-    // b. Show the day along with daily wage using map
-    getDailyWages() {
-        return this.dailyWages.map(day => `Day ${day.day}: Earned $${day.dailyWage}`);
-    }
-
-    // c. Show days when full-time wage (160) was earned using filter
-    getFullTimeDays() {
-        return this.dailyWages.filter(day => day.workHours === 8).map(day => day.day);
-    }
-
-    // d. Find the first occurrence when full-time wage was earned using find
-    getFirstFullTimeDay() {
-        let fullTimeDay = this.dailyWages.find(day => day.workHours === 8);
-        return fullTimeDay ? `First full-time wage earned on Day ${fullTimeDay.day}` : "No full-time wage earned";
-    }
-
-    // e. Check if every element with full-time wage truly holds full-time wage using every
-    checkAllFullTimeWages() {
-        return this.dailyWages.every(day => day.workHours !== 8 || day.dailyWage === 160);
-    }
-
-    // f. Check if there is any part-time wage using some
-    hasPartTimeWage() {
-        return this.dailyWages.some(day => day.workHours === 4);
-    }
-
-    // g. Find the number of days the employee worked
-    getDaysWorked() {
-        return this.dailyWages.length;
+    // b. Display Day-wise wages from Map
+    getDailyWagesFromMap() {
+        return [...this.dailyWageMap.entries()].map(([day, wage]) => `Day ${day}: Earned $${wage}`);
     }
 }
 
@@ -96,10 +75,5 @@ class Employee {
 const employee1 = new Employee("John Doe");
 employee1.calculateMonthlyWage();
 
-console.log(`Total Wage: $${employee1.getTotalWage()}`);
-console.log("Daily Wages:", employee1.getDailyWages());
-console.log("Days with Full-Time Wage:", employee1.getFullTimeDays());
-console.log(employee1.getFirstFullTimeDay());
-console.log("All Full-Time Wages are Correct:", employee1.checkAllFullTimeWages());
-console.log("Has Part-Time Wage:", employee1.hasPartTimeWage());
-console.log(`Total Days Worked: ${employee1.getDaysWorked()}`);
+console.log(`Total Wage from Map: $${employee1.getTotalWageFromMap()}`);
+console.log("Day-wise Wages from Map:", employee1.getDailyWagesFromMap());
