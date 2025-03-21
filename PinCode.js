@@ -1,8 +1,8 @@
-const pinCode = "400088";
-const pinCodePattern = /^\d{6}$/;
+const pincode = "A400088";
+const regex = /^[0-9]{6}$/;
 
-if (pinCode.match(pinCodePattern)) {
-    console.log("Valid PIN Code");
+if (regex.test(pincode)) {
+  console.log("Valid Pincode");
 } else {
-    console.log("Invalid PIN Code");
+  console.log("Invalid Pincode");
 }
