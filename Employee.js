@@ -1,8 +1,7 @@
 class Employee {
     constructor(name) {
         this.name = name;
-        this.dailyWageMap = new Map(); // Stores day → wage
-        this.dailyHourMap = new Map(); // Stores day → hours
+        this.workLog = []; // Stores [{ day, workHours, dailyWage }]
     }
 
     // Function to determine work hours
@@ -15,13 +14,11 @@ class Employee {
     // Function to calculate daily wage
     calculateDailyWage = (workHours) => workHours * 20;
 
-    // Function to calculate monthly wage and store in Maps
+    // Function to calculate monthly wage and store data in an object
     calculateMonthlyWage = () => {
         const MAX_DAYS = 20, MAX_HOURS = 160;
         let totalHours = 0, daysWorked = 0;
-
-        this.dailyWageMap.clear();
-        this.dailyHourMap.clear();
+        this.workLog = []; // Reset the work log
 
         while (totalHours < MAX_HOURS && daysWorked < MAX_DAYS) {
             let workHours = this.getWorkHours();
@@ -35,33 +32,20 @@ class Employee {
             totalHours += workHours;
             daysWorked++;
 
-            this.dailyWageMap.set(daysWorked, dailyWage);
-            this.dailyHourMap.set(daysWorked, workHours);
+            // Store as an object in the workLog array
+            this.workLog.push({ day: daysWorked, workHours, dailyWage });
         }
     };
 
-    // a. Calculate total wage and total hours worked using reduce
-    getTotalWageAndHours = () => ({
-        totalWage: [...this.dailyWageMap.values()].reduce((sum, wage) => sum + wage, 0),
-        totalHours: [...this.dailyHourMap.values()].reduce((sum, hours) => sum + hours, 0)
-    });
-
-    // b. Categorize days into full work, part work, and no work using filter
-    getWorkDayCategories = () => ({
-        fullWorkDays: [...this.dailyHourMap.entries()].filter(([_, hours]) => hours === 8).map(([day]) => day),
-        partWorkDays: [...this.dailyHourMap.entries()].filter(([_, hours]) => hours === 4).map(([day]) => day),
-        noWorkDays: [...this.dailyHourMap.entries()].filter(([_, hours]) => hours === 0).map(([day]) => day)
-    });
+    // Display the work log
+    displayWorkLog = () => this.workLog.forEach(log => 
+        console.log(`Day ${log.day}: Worked ${log.workHours} hrs, Earned $${log.dailyWage}`)
+    );
 }
 
 // Example Usage:
 const employee1 = new Employee("John Doe");
 employee1.calculateMonthlyWage();
 
-const { totalWage, totalHours } = employee1.getTotalWageAndHours();
-console.log(`Total Wage: $${totalWage}, Total Hours: ${totalHours}`);
-
-const workDayCategories = employee1.getWorkDayCategories();
-console.log("Full Work Days:", workDayCategories.fullWorkDays);
-console.log("Part Work Days:", workDayCategories.partWorkDays);
-console.log("No Work Days:", workDayCategories.noWorkDays);
+console.log("\nEmployee Work Log:");
+employee1.displayWorkLog();
