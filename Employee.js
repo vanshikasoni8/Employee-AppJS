@@ -73,37 +73,87 @@ class EmployeePayroll {
         this.startDate = new Date(startDate); // Ensure start date is in Date format
     }
 
-    // Function to validate employee name using regex pattern
-    validateName = () => {
+    // Function to validate employee ID (non-zero positive number)
+    validateEmployeeID = () => {
         try {
-            const namePattern = /^[A-Z][a-zA-Z]{2,}$/;  // Starts with capital, minimum 3 characters
-            if (!this.name.match(namePattern)) {
-                throw new Error('Invalid Name: Name must start with a capital letter and have at least 3 characters.');
+            // Convert ID to string for regex match
+            const idPattern = /^[1-9][0-9]*$/;  // Non-zero positive number
+            if (!String(this.id).match(idPattern)) {
+                throw new Error('Invalid Employee ID: ID must be a non-zero positive number.');
             }
-            return true;  // Name is valid
+            return true;
         } catch (error) {
-            console.error(error.message);  // Catch and log error
-            return false;  // Invalid name
+            console.error(error.message);
+            return false;
         }
+    };
+
+    // Function to validate salary (non-zero positive number)
+    validateSalary = () => {
+        try {
+            if (this.salary <= 0) {
+                throw new Error('Invalid Salary: Salary must be a non-zero positive number.');
+            }
+            return true;
+        } catch (error) {
+            console.error(error.message);
+            return false;
+        }
+    };
+
+    // Function to validate gender (M or F)
+    validateGender = () => {
+        try {
+            const genderPattern = /^[MF]$/;  // Must be 'M' or 'F'
+            if (!this.gender.match(genderPattern)) {
+                throw new Error('Invalid Gender: Gender must be "M" (Male) or "F" (Female).');
+            }
+            return true;
+        } catch (error) {
+            console.error(error.message);
+            return false;
+        }
+    };
+
+    // Function to validate start date (not in the future)
+    validateStartDate = () => {
+        try {
+            const today = new Date();
+            if (this.startDate > today) {
+                throw new Error('Invalid Start Date: Start date cannot be in the future.');
+            }
+            return true;
+        } catch (error) {
+            console.error(error.message);
+            return false;
+        }
+    };
+
+    // Function to validate all fields
+    validateAll = () => {
+        return this.validateEmployeeID() && 
+               this.validateSalary() && 
+               this.validateGender() && 
+               this.validateStartDate();
     };
 
     // Function to display employee details
     getDetails = () => {
-        if (this.validateName()) {
+        if (this.validateAll()) {
             const formattedStartDate = this.startDate.toLocaleDateString(); // Format the date
             return `Employee ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}, Gender: ${this.gender}, Start Date: ${formattedStartDate}`;
         } else {
-            return 'Employee name is invalid. Please check the name format.';
+            return 'Employee data is invalid. Please check the fields.';
         }
     };
 }
 
 // Example Usage:
-const emp1 = new EmployeePayroll(101, "John Doe", 50000, "Male", "2022-05-01");
-const emp2 = new EmployeePayroll(102, "jane smith", 60000, "Female", "2021-03-15");
+const emp1 = new EmployeePayroll(101, "John Doe", 50000, "M", "2022-05-01");
+const emp2 = new EmployeePayroll(102, "Jane Smith", -15000, "F", "2025-03-15");  // Invalid salary and future date
 
-console.log(emp1.getDetails());  // Valid name
-console.log(emp2.getDetails());  // Invalid name (starts with lowercase)
+console.log(emp1.getDetails());  // Valid data
+console.log(emp2.getDetails());  // Invalid salary and future date
 
 // // Example Usage:
 // const employee1 = new Employee("John Doe");
