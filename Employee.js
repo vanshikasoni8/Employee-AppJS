@@ -37,15 +37,40 @@ class Employee {
         }
     };
 
-    // Display the work log
-    displayWorkLog = () => this.workLog.forEach(log => 
-        console.log(`Day ${log.day}: Worked ${log.workHours} hrs, Earned $${log.dailyWage}`)
-    );
+    // a. Calculate total Wage and total hours worked using reduce
+    getTotalWageAndHours = () => ({
+        totalWage: this.workLog.reduce((sum, log) => sum + log.dailyWage, 0),
+        totalHours: this.workLog.reduce((sum, log) => sum + log.workHours, 0)
+    });
+
+    // b. Show full working days using forEach
+    showFullWorkDays = () => {
+        console.log("\nFull Working Days:");
+        this.workLog.forEach(log => {
+            if (log.workHours === 8) console.log(`Day ${log.day}: ${log.workHours} hrs`);
+        });
+    };
+
+    // c. Show part-time working days using map and reduce to string array
+    getPartWorkDays = () =>
+        this.workLog
+            .filter(log => log.workHours === 4)
+            .map(log => `Day ${log.day}`);
+
+    // d. Show no working days using map function
+    getNoWorkDays = () =>
+        this.workLog
+            .filter(log => log.workHours === 0)
+            .map(log => `Day ${log.day}`);
 }
 
 // Example Usage:
 const employee1 = new Employee("John Doe");
 employee1.calculateMonthlyWage();
 
-console.log("\nEmployee Work Log:");
-employee1.displayWorkLog();
+const { totalWage, totalHours } = employee1.getTotalWageAndHours();
+console.log(`\nTotal Wage: $${totalWage}, Total Hours Worked: ${totalHours}`);
+
+employee1.showFullWorkDays();
+console.log("\nPart-Time Work Days:", employee1.getPartWorkDays());
+console.log("\nNo Work Days:", employee1.getNoWorkDays());
