@@ -1,5 +1,5 @@
-const pincode = "400088B";
-const regex = /^[0-9]{6}$/;
+const pincode = "400 088";
+const regex = /^\d{3}\s?\d{3}$/;
 
 if (regex.test(pincode)) {
   console.log("Valid Pincode");
