@@ -1,4 +1,4 @@
-const pincode = "A400088";
+const pincode = "400088B";
 const regex = /^[0-9]{6}$/;
 
 if (regex.test(pincode)) {
